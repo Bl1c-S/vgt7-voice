@@ -1,0 +1,28 @@
+﻿services:
+  psql:
+    image: timescale/timescaledb:latest-pg18
+    container_name: vgt7psql
+    environment:
+      POSTGRES_DB: vgt7db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - psql
+
+volumes:
+  pgdata:

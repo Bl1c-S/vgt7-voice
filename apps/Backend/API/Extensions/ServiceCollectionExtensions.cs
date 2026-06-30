@@ -2,9 +2,12 @@
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddApplicationServices(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddControllers();
-        services.AddOpenApi();
+        public void AddApplicationServices()
+        {
+            services.AddControllers();
+            services.AddOpenApi();
+        }
     }
 }

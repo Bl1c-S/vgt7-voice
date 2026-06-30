@@ -1,27 +1,33 @@
 ﻿using Google.GenAI;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.AI;
 
 public class GeminiController : AiControllerBase
 {
-    private const string Model = "gemini-2.0-flash"; 
+    private Client? _geminiClient;
+    private const string Model = "gemini-2.0-flash";
+    protected override string ApiKeyConfigName => "GEMINI_API_KEY";
+    
+    public GeminiController(IConfiguration configuration) : base(configuration)
+    {
+    }
 
-    public override void Create() //Override
+    public override void Create() 
     {
         base.Create();
-
-        var apiKey = System.Environment.GetEnvironmentVariable("GOOGLE_API_KEY")
-                     ?? throw new InvalidOperationException("GOOGLE_API_KEY Not Found");
-
-        Client = new Client(apiKey: apiKey);
+        _geminiClient = new Client(apiKey: ApiKey); 
     }
 
     public override string GetResponse(string prompt)
     {
-        if (Client is not Client geminiClient)
-            throw new InvalidOperationException("EmptyClient");
+        if (_geminiClient == null)
+            throw new InvalidOperationException("Gemini client is not initialized");
 
-        return SendRequestAsync(geminiClient, prompt).GetAwaiter().GetResult();
+        if (string.IsNullOrWhiteSpace(prompt))
+            throw new ArgumentException("prompt is empty", nameof(prompt));
+        
+        return SendRequestAsync(_geminiClient, prompt).GetAwaiter().GetResult(); //TODO Await 
     }
 
     private async Task<string> SendRequestAsync(Client geminiClient, string prompt)
@@ -30,6 +36,6 @@ public class GeminiController : AiControllerBase
             model: Model,
             contents: prompt
         );
-        return response.Text ?? throw new InvalidOperationException("EmptyResponse");;
+        return response.Text ?? throw new InvalidOperationException("EmptyResponse");
     }
 }

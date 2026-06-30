@@ -6,7 +6,7 @@ namespace Infrastructure.Logger;
 
 public static class Vgt7Logger
 {
-    public static Serilog.Core.Logger Create(string connectionString)
+    public static Serilog.Core.Logger Create(string? connectionString)
     {
         var columnWriters = new Dictionary<string, ColumnWriterBase>
         {

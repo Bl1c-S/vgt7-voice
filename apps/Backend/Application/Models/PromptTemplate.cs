@@ -1,3 +1,3 @@
 ﻿namespace Application.Models;
 
-public record PromptTemplate(bool isEnable, string Name, string Prompt);
+public record PromptTemplate(bool IsEnable, string Name, string Prompt);

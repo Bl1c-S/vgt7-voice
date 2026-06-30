@@ -1,7 +1,9 @@
-﻿    namespace Application;
+﻿    using Application.Models.AiModel;
+
+    namespace Application;
 
     public interface IAiController
-    { 
-        void Create();
-        string GetResponse(string prompt);
+    {
+        protected AiModelDescriptor Model { get; set; }
+        Task<string> SendRequestAsync(string prompt);
     }

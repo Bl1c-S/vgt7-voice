@@ -1,6 +1,7 @@
-﻿namespace Application;
+﻿    namespace Application;
 
-public interface IAiController
-{
-    public void Create();
-}
+    public interface IAiController
+    { 
+        void Create();
+        string GetResponse(string prompt);
+    }

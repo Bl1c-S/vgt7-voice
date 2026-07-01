@@ -48,7 +48,7 @@ public class AiManagerFactory(IOptions<AiOptions> options)
 
         if (string.IsNullOrWhiteSpace(key))
         {
-            throw new InvalidOperationException($"API_KEY для провайдера {provider} не сконфигурирован.");
+            throw new InvalidOperationException($"API_KEY: {AiProviderTypes.Gemini} not found.");
         }
 
         return key;

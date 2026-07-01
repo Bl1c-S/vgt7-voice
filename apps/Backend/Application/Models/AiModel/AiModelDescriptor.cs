@@ -25,7 +25,7 @@ public class AiModelDescriptor
     
     public AiModelDescriptor(AiModelTypes type)
     {
-        Provider = type.GetAiProvider(); //must be first!
+        Provider = type.GetAiProvider(); //must be first! check factory tests
         Name = type.GetDescription();
         ApiKeyConfigName = Provider.GetDescription(); //TODO remove
         

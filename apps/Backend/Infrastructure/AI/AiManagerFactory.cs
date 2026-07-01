@@ -6,7 +6,7 @@ namespace Infrastructure.AI;
 
 public class AiManagerFactory(IConfiguration configuration)
 {
-    public AiManager Create(AiModelTypes modelType)
+    public AiManagerBase Create(AiModelTypes modelType)
     {
         var model = new AiModelDescriptor(modelType);
         var apiKey = GetApiKey(configuration, model.ApiKeyConfigName);
@@ -15,7 +15,7 @@ public class AiManagerFactory(IConfiguration configuration)
         return factory(model, apiKey);
     }
 
-    private static Func<AiModelDescriptor, string, AiManager> SelectCreateMethod(AiProviderTypes modelType)
+    private static Func<AiModelDescriptor, string, AiManagerBase> SelectCreateMethod(AiProviderTypes modelType)
     {
         return modelType switch
         {

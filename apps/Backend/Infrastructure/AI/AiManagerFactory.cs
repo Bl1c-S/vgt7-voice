@@ -1,15 +1,17 @@
 ﻿using Application.Models.AiModel;
 using Application.Models.AiProvider;
-using Microsoft.Extensions.Configuration;
+using Infrastructure.AI.Options;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.AI;
 
-public class AiManagerFactory(IConfiguration configuration)
+public class AiManagerFactory(IOptions<AiOptions> options)
 {
+    private readonly AiOptions _options = options.Value;
     public AiManagerBase Create(AiModelTypes modelType)
     {
         var model = new AiModelDescriptor(modelType);
-        var apiKey = GetApiKey(configuration, model.ApiKeyConfigName);
+        var apiKey = GetApiKey(model.Provider);
 
         var factory = SelectCreateMethod(model.Provider);
         return factory(model, apiKey);
@@ -35,9 +37,21 @@ public class AiManagerFactory(IConfiguration configuration)
         return new OpenAiManager(model, apiKey);
     }
 
-    private static string GetApiKey(IConfiguration configuration, string apiKeyConfigName)
+    private string GetApiKey(AiProviderTypes provider)
     {
-        return configuration[apiKeyConfigName]
-               ?? throw new InvalidOperationException($"API_KEY: {apiKeyConfigName} not found");
+        var key = provider switch
+        {
+            AiProviderTypes.Gemini => _options.GEMINI_API_KEY,
+            AiProviderTypes.OpenAi => _options.OPENAI_API_KEY,
+            _ => throw new NotImplementedException()
+        };
+
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            throw new InvalidOperationException($"API_KEY для провайдера {provider} не сконфигурирован.");
+        }
+
+        return key;
     }
+    
 }

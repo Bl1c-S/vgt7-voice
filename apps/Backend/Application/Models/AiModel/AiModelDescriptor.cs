@@ -25,9 +25,10 @@ public class AiModelDescriptor
     
     public AiModelDescriptor(AiModelTypes type)
     {
-        Type = type;
+        Provider = type.GetAiProvider(); //must be first!
         Name = type.GetDescription();
-        Provider = type.GetAiProvider();
-        ApiKeyConfigName = Provider.GetDescription();
+        ApiKeyConfigName = Provider.GetDescription(); //TODO remove
+        
+        Type = type;
     }
 }

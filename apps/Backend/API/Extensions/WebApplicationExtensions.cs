@@ -1,7 +1,4 @@
-﻿using Infrastructure.Logger;
-using Serilog;
-
-namespace API.Extensions;
+﻿namespace API.Extensions;
 
 public static class WebApplicationExtensions
 {
@@ -20,13 +17,6 @@ public static class WebApplicationExtensions
                 var hostAddress = app.Configuration["API_HostAddress"] ?? "http://localhost:5250";
                 Console.WriteLine($"Swagger UI: {hostAddress}/swagger/index.html");
             });
-        }
-
-        public void ConfigureServices()
-        {
-            var cfg = app.Configuration;
-
-            Log.Logger = Vgt7Logger.Create(cfg["PSQL"]);
         }
     }
 }

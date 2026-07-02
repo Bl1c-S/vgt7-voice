@@ -4,11 +4,10 @@ using Serilog;
 Log.Information("Starting application");
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddApplicationServices();
+builder.AddApplicationServices();
 var app = builder.Build();
 
 app.ConfigureDevelopment();
-app.ConfigureServices();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

@@ -1,6 +1,6 @@
 ﻿using Application.Models.AiModel;
 using Application.Models.AiProvider;
-using Infrastructure.AI.Options;
+using Infrastructure.Options;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.AI;
@@ -8,6 +8,7 @@ namespace Infrastructure.AI;
 public class AiManagerFactory(IOptions<AiOptions> options)
 {
     private readonly AiOptions _options = options.Value;
+
     public AiManagerBase Create(AiModelTypes modelType)
     {
         var model = new AiModelDescriptor(modelType);
@@ -39,19 +40,11 @@ public class AiManagerFactory(IOptions<AiOptions> options)
 
     private string GetApiKey(AiProviderTypes provider)
     {
-        var key = provider switch
+        return provider switch
         {
-            AiProviderTypes.Gemini => _options.GEMINI_API_KEY,
-            AiProviderTypes.OpenAi => _options.OPENAI_API_KEY,
-            _ => throw new NotImplementedException()
+            AiProviderTypes.Gemini => _options.GeminiApiKey,
+            AiProviderTypes.OpenAi => _options.OpenaiApiKey,
+            _ => throw new InvalidOperationException($"API_KEY: {provider} not found.")
         };
-
-        if (string.IsNullOrWhiteSpace(key))
-        {
-            throw new InvalidOperationException($"API_KEY: {AiProviderTypes.Gemini} not found.");
-        }
-
-        return key;
     }
-    
 }

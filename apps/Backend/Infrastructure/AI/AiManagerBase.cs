@@ -1,5 +1,5 @@
-﻿using Application;
-using Application.Models.AiModel;
+﻿using Application.Models.AiModel;
+using Infrastructure.Interfaces;
 
 namespace Infrastructure.AI;
 

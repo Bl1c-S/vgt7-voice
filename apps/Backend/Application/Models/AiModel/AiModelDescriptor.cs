@@ -13,22 +13,17 @@ public class AiModelDescriptor
             if (value.GetAiProvider() == Provider)
                 field = value;
             else
-                throw new InvalidOperationException("InvalidModel");
+                throw new ArgumentException("Model provider mismatch");
         }
     }
 
-    public readonly string Name;
+    public string Name => Type.GetDescription();
     
     public readonly AiProviderTypes Provider;
     
-    public readonly string ApiKeyConfigName;
-    
     public AiModelDescriptor(AiModelTypes type)
     {
-        Provider = type.GetAiProvider(); //must be first! check factory tests
-        Name = type.GetDescription();
-        ApiKeyConfigName = Provider.GetDescription(); //TODO remove
-        
+        Provider = type.GetAiProvider();
         Type = type;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Models.AiModel;
+using Infrastructure.AI;
 
-namespace Infrastructure.AI;
+namespace Application.Services.AI;
 
 public class OpenAiManager : AiManagerBase
 {

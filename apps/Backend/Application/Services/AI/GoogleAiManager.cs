@@ -1,7 +1,8 @@
 ﻿using Application.Models.AiModel;
 using Google.GenAI;
+using Infrastructure.AI;
 
-namespace Infrastructure.AI;
+namespace Application.Services.AI;
 
 public class GoogleAiManager(AiModelDescriptor model, string apiKey) : AiManagerBase(model)
 {

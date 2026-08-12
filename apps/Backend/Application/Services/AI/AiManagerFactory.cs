@@ -1,14 +1,14 @@
 ﻿using Application.Models.AiModel;
 using Application.Models.AiProvider;
+using Infrastructure.AI;
 using Infrastructure.Options;
 using Microsoft.Extensions.Options;
 
-namespace Infrastructure.AI;
+namespace Application.Services.AI;
 
 public class AiManagerFactory(IOptions<AiOptions> options)
 {
     private readonly AiOptions _options = options.Value;
-
     public AiManagerBase Create(AiModelTypes modelType)
     {
         var model = new AiModelDescriptor(modelType);

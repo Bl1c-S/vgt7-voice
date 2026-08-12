@@ -1,6 +1,6 @@
 ﻿    using Application.Models.AiModel;
 
-    namespace Infrastructure.Interfaces;
+    namespace Application;
 
     public interface IAiManager
     {

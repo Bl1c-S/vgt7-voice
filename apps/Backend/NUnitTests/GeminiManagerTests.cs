@@ -1,4 +1,5 @@
 ﻿using Application.Models.AiModel;
+using Application.Services.AI;
 using Infrastructure.AI;
 
 namespace NUnit;

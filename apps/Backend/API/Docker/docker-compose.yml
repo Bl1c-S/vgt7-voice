@@ -5,7 +5,7 @@
     environment:
       POSTGRES_DB: vgt7db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_PASSWORD: yourpassword # В идеале передавать через .env файл
     ports:
       - "5432:5432"
     volumes:
@@ -21,8 +21,14 @@
       - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      # Переопределяем строку подключения. Host=psql заставляет Docker искать соседний контейнер.
+      - Connection__PSQL=Host=psql;Port=5432;Database=vgt7db;Username=postgres;Password=yourpassword
     depends_on:
       - psql
+    volumes:
+      # Сохраняем ключи Data Protection, чтобы они пережили перезагрузку контейнера
+      - dp_keys:/home/app/.aspnet/DataProtection-Keys
 
 volumes:
   pgdata:
+  dp_keys:

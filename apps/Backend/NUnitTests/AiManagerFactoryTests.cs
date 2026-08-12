@@ -1,4 +1,5 @@
 ﻿using Application.Models.AiModel;
+using Application.Services.AI;
 using Infrastructure.AI;
 using Infrastructure.Options;
 using Microsoft.Extensions.Options;
@@ -12,12 +13,14 @@ public class AiManagerFactoryTests
 
     private AiManagerFactoryTests()
     {
-        var options = Options.Create(new AiOptions
+        var aiOptions = new AiOptions
         {
             GeminiApiKey = "fake-gemini-api-key",
             OpenaiApiKey = "fake-openapi-api-key"
-        });
-        _factory = new AiManagerFactory(options);
+        };
+        var optionsWrapper = Options.Create(aiOptions);
+        
+        _factory = new AiManagerFactory(optionsWrapper);
     }
     
     [Test]

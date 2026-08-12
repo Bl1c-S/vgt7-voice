@@ -1,15 +1,11 @@
-﻿using Infrastructure.Options;
-using Microsoft.Extensions.Options;
-using NpgsqlTypes;
+﻿using NpgsqlTypes;
 using Serilog;
 using Serilog.Sinks.PostgreSQL;
 
 namespace Infrastructure.Logger;
 
-public class Vgt7LoggerBuilder(IOptions<ConnectionOptions> options)
+public class Vgt7LoggerBuilder(string connectionString)
 {
-    private readonly ConnectionOptions _options = options.Value;
-
     public Serilog.Core.Logger Build()
     {
         var columnWriters = new Dictionary<string, ColumnWriterBase>
@@ -26,9 +22,8 @@ public class Vgt7LoggerBuilder(IOptions<ConnectionOptions> options)
         var logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .Enrich.WithProperty("Application", "API")
-            .Enrich.WithProperty("Application", "Infrastructure")
             .WriteTo.PostgreSQL(
-                connectionString: _options.Psql,
+                connectionString: connectionString,
                 tableName: "logs",
                 columnOptions: columnWriters,
                 needAutoCreateTable: false)

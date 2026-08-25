@@ -26,12 +26,11 @@ public class Vgt7LoggerBuilder(string connectionString)
                 connectionString: connectionString,
                 tableName: "logs",
                 columnOptions: columnWriters,
-                needAutoCreateTable: false)
+                needAutoCreateTable: true)
             .WriteTo.Console()
             .CreateLogger();
         
         Log.Logger = logger;
-        Log.Information("Logger init");
         return logger;
     }
 }

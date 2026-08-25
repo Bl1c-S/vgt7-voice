@@ -7,13 +7,14 @@ using Infrastructure.Logger;
 using Infrastructure.Model;
 using Infrastructure.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
-namespace API.Extensions;
+namespace API.Extensions.WebApplicationBuilderExtensions;
 
-public static class WebApplicationBuilderExtensions
+public static class ConfigureWebApplicationBuilderExtensions
 {
     extension(WebApplicationBuilder builder)
     {
@@ -28,8 +29,8 @@ public static class WebApplicationBuilderExtensions
 
             builder.ConfigureLogger(connectionOptions);
             services.ConfigureOptions(cfg);
-
-            services.ConfigureEntityFramework(cfg, connectionOptions);
+            
+            services.ConfigureEntityFramework(cfg, connectionOptions, builder);
             services.ConfigureAuthentication(cfg, authOptions);
             services.ConfigureAiServices(cfg, aiOptions);
 
@@ -55,17 +56,21 @@ public static class WebApplicationBuilderExtensions
                 configuration.ReadFrom.Services(services)
                     .WriteTo.Logger(logger);
             });
+            Log.Information("Logger init");
         }
     }
 
     extension(IServiceCollection services)
     {
-        private void ConfigureEntityFramework(ConfigurationManager cfg, ConnectionOptions options)
+        private void ConfigureEntityFramework(ConfigurationManager cfg, ConnectionOptions options, WebApplicationBuilder builder)
         {
-            services.AddDbContext<Vgt7UserDbContext>(op =>
+            services.AddDbContext<ApplicationDbContext>(op =>
                 op.UseNpgsql(options.Psql));
 
-            services.AddIdentityCore<Vgt7User>().AddEntityFrameworkStores<Vgt7UserDbContext>();
+            services.AddIdentityCore<Vgt7User>().AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDataProtection()
+                .SetApplicationName("Vgt7App")
+                .PersistKeysToDbContext<ApplicationDbContext>();
         }
 
         private void ConfigureAuthentication(ConfigurationManager cfg, AuthOptions options)

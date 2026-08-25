@@ -12,8 +12,8 @@
       - pgdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d vgt7db"]
-      interval: 5s
-      timeout: 5s
+      interval: 1s
+      timeout: 1s
       retries: 5
 
   api:
@@ -26,7 +26,7 @@
       - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__Psql=Host=psql;Port=5432;Database=vgt7db;Username=postgres;Password=yourpassword
+      - ConnectionStrings__PSQL=Host=psql;Port=5432;Database=vgt7db;Username=postgres;Password=yourpassword;
     depends_on:
       psql:
         condition: service_healthy

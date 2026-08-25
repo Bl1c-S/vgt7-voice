@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Hosting.Server.Features;
 using Serilog;
 
-namespace API.Extensions;
+namespace API.Extensions.WebApplicationExtensions;
 
-public static class WebApplicationExtensions
+public static class ConfigureExtensions
 {
     extension(WebApplication app)
     {
@@ -22,7 +22,7 @@ public static class WebApplicationExtensions
         public void ApplicationStarted()
         {
             app.Lifetime.ApplicationStarted.Register(app.PrintAddresses);
-            Log.CloseAndFlush();
+            Log.Information("Application started");
         }
 
         private void PrintAddresses()

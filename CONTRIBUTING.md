@@ -1,18 +1,18 @@
 # Pull Request Conventions Guide
 
+This guide outlines the conventions for creating pull requests in this repository.
+
 ## ✨ Issue
 
-Create a [new issue](https://github.com/Bl1c-S/vgt7-voice/issues) for automatic task tracking. Find the issue number from them head `#number`.
+First, create a [new issue](https://github.com/Bl1c-S/vgt7-voice/issues) for the task you are working on. This allows for automatic tracking of tasks. Make a note of the issue number.
 
-```text
-<free style concise title>
-```
+A good issue title is concise and written in a free style.
 
 ---
 
 ## 🌱 Branch
 
-Create a branch from this issue and follow the conventions.
+Create a branch from the issue, following the conventions below.
 
 ```text
 <type>/[issue-number]-<short-description>
@@ -22,12 +22,20 @@ Create a branch from this issue and follow the conventions.
 
 ## 🔰 Pull Request
 
-Create a [new PR](https://github.com/Bl1c-S/vgt7-voice/pulls) from your branch.
+Create a [new pull request](https://github.com/Bl1c-S/vgt7-voice/pulls) from your branch.
 
-Add a line to the description that says `Closes #[issue-number]` to automatically close the issue.
+In the pull request description, add a line that says `Closes #[issue-number]` to automatically close the corresponding issue.
+
 ```text
-<Closes #>[issue-number]
+Closes #[issue-number]
 ```
+
+- Describe the changes you made in the pull request.
+- Assign reviewers, assignees, labels, and projects for the PR.
+
+After the final commit, the PR needs to be moved to the `In Review` column. After a successful review, the PR will be merged, and the linked issue will automatically move to the `Done` column.
+
+---
 
 # Branch Conventions Guide
 

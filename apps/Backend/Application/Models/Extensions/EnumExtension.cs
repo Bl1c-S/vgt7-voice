@@ -2,6 +2,8 @@
 using System.Reflection;
 using Application.Models.AiModel;
 using Application.Models.AiProvider;
+using Application.Models.TranscriptionModel;
+using Application.Models.TranscriptionProvider;
 
 namespace Application.Models.Extensions;
 
@@ -18,6 +20,11 @@ public static class EnumExtension
         public AiProviderTypes GetAiProvider()
         {
             var attribute = GetAttribute<AiModelAttribute>(value);
+            return attribute.ProviderTypes;
+        }
+        public TranscriptionProviderTypes GetTranscriptionProvider()
+        {
+            var attribute = GetAttribute<TranscriptionModelAttribute>(value);
             return attribute.ProviderTypes;
         }
     }

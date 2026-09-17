@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests-APP-NUnit", "Tests-AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{DF5B5676-AB84-448B-AC87-2516E75A6168}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests-API-NUnit", "Tests-API-NUnit\Tests-API-NUnit.csproj", "{0A3CAE4D-8732-4459-886D-EC07DD4F9EE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{DF5B5676-AB84-448B-AC87-2516E75A6168}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF5B5676-AB84-448B-AC87-2516E75A6168}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF5B5676-AB84-448B-AC87-2516E75A6168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A3CAE4D-8732-4459-886D-EC07DD4F9EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A3CAE4D-8732-4459-886D-EC07DD4F9EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A3CAE4D-8732-4459-886D-EC07DD4F9EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A3CAE4D-8732-4459-886D-EC07DD4F9EE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

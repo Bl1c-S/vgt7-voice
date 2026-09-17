@@ -76,7 +76,7 @@ public static class ConfigureWebApplicationBuilderExtensions
         private void ConfigureAuthentication(ConfigurationManager cfg, AuthOptions options)
         {
             services.AddScoped<TokenService>();
-            services.AddScoped<AuthService>();
+            services.AddScoped<EmailAuthService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(op =>
                 {

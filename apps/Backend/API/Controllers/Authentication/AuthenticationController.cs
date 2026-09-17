@@ -11,8 +11,8 @@ public class AuthenticationController(AuthService authService, TokenService toke
     [HttpPost("login/email/")]
     public IActionResult Login([FromBody] LoginByEmailRequest request)
     {
-        if (request.IsValidLogin(out var message))
-            return BadRequest(message);
+        if (!request.IsValidRequest())
+            return BadRequest("Invalid login request.");
 
         var isLogin = authService.Login(request.Email, request.Password, out var user);
         if (!isLogin || user is null) return Forbid();
@@ -24,8 +24,8 @@ public class AuthenticationController(AuthService authService, TokenService toke
     [HttpPost("register/email/")]
     public IActionResult Register([FromBody] RegisterByEmailRequest request)
     {
-        if (request.IsValidLogin(out var message))
-            return BadRequest(message);
+        if (!request.IsValidRequest())
+            return BadRequest("Invalid registration request.");
 
         try
         {

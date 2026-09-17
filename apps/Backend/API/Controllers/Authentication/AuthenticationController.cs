@@ -1,4 +1,4 @@
-﻿using API.Models.Request;
+﻿using API.Models.Requests;
 using API.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 

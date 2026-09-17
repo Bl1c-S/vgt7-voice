@@ -90,7 +90,7 @@ public class CallTranscriptBuilderTests
         var words = new List<TranscribedWord>
         {
             new(0, 0, "Слово1", 0.0m, 0.5m),
-            new(0, 0, "Слово2", 1.5m, 2.0m),
+            new(0, 0, "Слово2", 1.1m, 1.6m),
         };
 
         var result = _builder.Build(words, callDurationSec: 2.0);

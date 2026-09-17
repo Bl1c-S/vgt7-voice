@@ -28,7 +28,8 @@ public static class ConfigureExtensions
         private void PrintAddresses()
         {
             var addressFeature = app.GetAddressFeature();
-            if (addressFeature == null && addressFeature!.Addresses.Count == 0) return;
+            if (addressFeature == null || addressFeature.Addresses.Count == 0) return;
+            
             var address = addressFeature.Addresses.First().LocalHostReplace();
             PrintHelloLog(address);
         }

@@ -32,7 +32,6 @@
 
     <ItemGroup>
       <Folder Include="Interfaces\" />
-      <Folder Include="Models\Users\" />
     </ItemGroup>
 
 </Project>

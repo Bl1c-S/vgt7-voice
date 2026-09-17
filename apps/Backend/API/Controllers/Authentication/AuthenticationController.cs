@@ -1,4 +1,4 @@
-﻿using API.Models.Request;
+﻿using API.Models.Requests;
 using API.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace API.Controllers.Authentication;
 public class AuthenticationController(AuthService authService, TokenService tokenService) : ControllerBase
 {
     [HttpPost("login/email/")]
-    public IActionResult Login([FromBody] LoginRequest request)
+    public IActionResult Login([FromBody] LoginByEmailRequest request)
     {
         if (request.IsValidLogin(out var message))
             return BadRequest(message);
@@ -22,7 +22,7 @@ public class AuthenticationController(AuthService authService, TokenService toke
     }
 
     [HttpPost("register/email/")]
-    public IActionResult Register([FromBody] LoginRequest request)
+    public IActionResult Register([FromBody] RegisterByEmailRequest request)
     {
         if (request.IsValidLogin(out var message))
             return BadRequest(message);

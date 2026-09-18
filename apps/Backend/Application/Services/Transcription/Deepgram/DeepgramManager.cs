@@ -14,7 +14,7 @@ public class DeepgramManager(TranscriptionModelDescriptor model, string apiKey) 
     
     private readonly IListenRESTClient _client = ClientFactory.CreateListenRESTClient(apiKey);
     
-    public override async Task<CallTranscript> TranscribeAsync(byte[] audio)
+    public override async Task<CallTranscript> TranscribeAsync(byte[] audio, int managerChannel)
     {
         SyncResponse response;
         try
@@ -43,6 +43,6 @@ public class DeepgramManager(TranscriptionModelDescriptor model, string apiKey) 
             return new CallTranscript { Utterances = [], DurationSec = response.Metadata?.Duration ?? 0 };
 
         var words = _deepgramResponseMapper.MapToWords(channels);
-        return _callTranscriptBuilder.Build(words, response.Metadata?.Duration ?? 0);
+        return _callTranscriptBuilder.Build(words, response.Metadata?.Duration ?? 0, managerChannel);
     }
 }

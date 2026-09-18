@@ -7,10 +7,11 @@ public abstract class TranscriptionManagerBase(TranscriptionModelDescriptor mode
 {
     public TranscriptionModelDescriptor Model { get; set; } = model;
 
-    public virtual Task<CallTranscript> TranscribeAsync(byte[] audio)
+    public virtual Task<CallTranscript> TranscribeAsync(byte[] audio, int managerChannel = 0)
     {
         throw new NotImplementedException();
     }
+    
     public virtual void Dispose()
     {
         throw new NotImplementedException();

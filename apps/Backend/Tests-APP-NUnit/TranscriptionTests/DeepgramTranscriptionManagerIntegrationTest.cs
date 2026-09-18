@@ -24,7 +24,7 @@ public class DeepgramTranscriptionManagerIntegrationTest
 
         var audioBytes = await File.ReadAllBytesAsync(TestAudioFilePath);
 
-        var result = await manager.TranscribeAsync(audioBytes);
+        var result = await manager.TranscribeAsync(audioBytes, 0);
 
         Assert.That(result.Utterances, Is.Not.Empty);
         Assert.That(result.DurationSec, Is.GreaterThan(0));

@@ -1,11 +1,11 @@
 ﻿using Application.Models.Transcription;
 using Application.Models.TranscriptionModel;
 
-namespace Application; //TODO change namaspace
+namespace Application; //TODO change namespace
 
 public interface ITranscriptionManager
-{
-    protected TranscriptionModelDescriptor Model { get; set; }
+{ 
+    TranscriptionModelDescriptor Model { get; set; }
     
-    Task<CallTranscript> TranscribeAsync(byte[] audio);
+    Task<CallTranscript> TranscribeAsync(byte[] audio, int managerChannel);
 }

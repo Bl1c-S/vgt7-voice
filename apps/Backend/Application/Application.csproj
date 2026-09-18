@@ -7,10 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
+        <Folder Include="Services\" />
     </ItemGroup>
-
+    
     <ItemGroup>
+      <PackageReference Include="Deepgram" Version="7.0.0" />
       <PackageReference Include="Google.GenAI" Version="1.19.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.11" />
     </ItemGroup>

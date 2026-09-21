@@ -67,7 +67,14 @@ public static class ConfigureWebApplicationBuilderExtensions
             services.AddDbContext<ApplicationDbContext>(op =>
                 op.UseNpgsql(options.Psql));
 
-            services.AddIdentityCore<Vgt7User>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentityCore<Vgt7User>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddDataProtection()
                 .SetApplicationName("Vgt7App")
                 .PersistKeysToDbContext<ApplicationDbContext>();

@@ -38,10 +38,11 @@ public class EmailAuthenticationController(EmailAuthService authService, TokenSe
             else
                 Log.Information("Registration attempt for existing email: {Email}", request.Email);
             
-            return Ok();
+            return Ok(); // send OK anyway to save user bruteforce
         }
         catch (ArgumentException ex)
         {
+            Log.Information(ex, "Registration argument bad by the request email: {Email}", request.Email);
             return BadRequest(ex.Message);
         }
         catch (Exception ex)

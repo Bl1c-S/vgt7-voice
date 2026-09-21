@@ -3,9 +3,9 @@ using Deepgram.Models.Listen.v1.REST;
 
 namespace Application.Services.Transcription.Deepgram;
 
-public class DeepgramResponseMapper
+public static class DeepgramResponseMapper
 {
-    public List<TranscribedWord> MapToWords(IReadOnlyList<Channel> channels)
+    public static List<TranscribedWord> MapToWords(IReadOnlyList<Channel> channels)
     {
         var words = new List<TranscribedWord>();
         for (var channelIndex = 0; channelIndex < channels.Count; channelIndex++)

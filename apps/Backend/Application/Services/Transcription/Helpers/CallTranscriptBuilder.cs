@@ -3,11 +3,11 @@ using Application.Models.Transcription;
 
 namespace Application.Services.Transcription.Helpers;
 
-public class CallTranscriptBuilder
+public static class CallTranscriptBuilder
 {
     private const decimal MaxPauseBetweenWordsSec = 0.8m; //TODO config/settings in plugin 
 
-    public CallTranscript Build(List<TranscribedWord> words, double callDurationSec, int managerChannel = 0)
+    public static CallTranscript Build(List<TranscribedWord> words, double callDurationSec, int managerChannel = 0)
     {
         if (words.Count == 0)
             return new CallTranscript { Utterances = [], DurationSec = callDurationSec };

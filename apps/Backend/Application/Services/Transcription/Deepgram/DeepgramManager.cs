@@ -9,8 +9,6 @@ namespace Application.Services.Transcription.Deepgram;
 
 public class DeepgramManager(TranscriptionModelDescriptor model, string apiKey) : TranscriptionManagerBase(model)
 {
-    private readonly DeepgramResponseMapper _deepgramResponseMapper = new();
-    private readonly CallTranscriptBuilder _callTranscriptBuilder = new();
     
     private readonly IListenRESTClient _client = ClientFactory.CreateListenRESTClient(apiKey);
     
@@ -42,7 +40,7 @@ public class DeepgramManager(TranscriptionModelDescriptor model, string apiKey) 
         if (channels is null || channels.Count == 0)
             return new CallTranscript { Utterances = [], DurationSec = response.Metadata?.Duration ?? 0 };
 
-        var words = _deepgramResponseMapper.MapToWords(channels);
-        return _callTranscriptBuilder.Build(words, response.Metadata?.Duration ?? 0, managerChannel);
+        var words = DeepgramResponseMapper.MapToWords(channels);
+        return CallTranscriptBuilder.Build(words, response.Metadata?.Duration ?? 0, managerChannel);
     }
 }

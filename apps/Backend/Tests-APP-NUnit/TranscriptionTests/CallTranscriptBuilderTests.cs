@@ -6,17 +6,10 @@ namespace NUnit.TranscriptionTests;
 [TestFixture]
 public class CallTranscriptBuilderTests
 {
-    private CallTranscriptBuilder _builder;
-
-    public CallTranscriptBuilderTests()
-    {
-        _builder = new CallTranscriptBuilder();
-    }
-
     [Test]
     public void Build_EmptyWords_ReturnsEmptyUtterances()
     {
-        var result = _builder.Build(new List<TranscribedWord>(), callDurationSec: 0);
+        var result = CallTranscriptBuilder.Build(new List<TranscribedWord>(), callDurationSec: 0);
 
         Assert.That(result.Utterances, Is.Empty);
         Assert.That(result.DurationSec, Is.EqualTo(0));
@@ -31,7 +24,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "день", 0.5m, 1.0m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 1.0);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 1.0);
 
         Assert.That(result.Utterances, Has.Count.EqualTo(1));
         Assert.That(result.Utterances[0].Text, Is.EqualTo("Добрый день"));
@@ -51,7 +44,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "Иван", 1.2m, 1.5m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 1.5);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 1.5);
 
         var managerUtterance = result.Utterances.Single(u => u.Role == CallRole.Manager);
         Assert.That(managerUtterance.Text, Is.EqualTo("Добрый день меня зовут Иван"));
@@ -75,7 +68,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "данные", 50.5m, 51.0m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 51.0);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 51.0);
 
         Assert.That(result.Utterances, Has.Count.EqualTo(2));
         Assert.That(result.Utterances[0].Text, Is.EqualTo("Минутку я проверю"));
@@ -93,7 +86,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "Слово2", 1.1m, 1.6m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 2.0);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 2.0);
 
         Assert.That(result.Utterances, Has.Count.EqualTo(1));
         Assert.That(result.Utterances[0].Text, Is.EqualTo("Слово1 Слово2"));
@@ -108,7 +101,7 @@ public class CallTranscriptBuilderTests
             new(0, 1, "Дарья", 5.0m, 5.5m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 5.5);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 5.5);
 
         Assert.That(result.Utterances, Has.Count.EqualTo(2));
         Assert.That(result.Utterances[0].Speaker, Is.EqualTo(0));
@@ -127,7 +120,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "день", 0.5m, 1.0m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 1.0);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 1.0);
 
         Assert.That(result.Utterances, Has.Count.EqualTo(1));
         Assert.That(result.Utterances[0].Text, Is.EqualTo("Добрый день"));
@@ -141,7 +134,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "тест", null, null),
         };
 
-        var result = _builder.Build(words, callDurationSec: 1.0);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 1.0);
 
         Assert.That(result.Utterances, Is.Empty);
     }
@@ -155,7 +148,7 @@ public class CallTranscriptBuilderTests
             new(1, 0, "Добрый день", 0.5m, 1.0m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 1.0, managerChannel: 1);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 1.0, managerChannel: 1);
 
         Assert.That(result.Utterances[0].Role, Is.EqualTo(CallRole.Client));
         Assert.That(result.Utterances[1].Role, Is.EqualTo(CallRole.Manager));
@@ -169,7 +162,7 @@ public class CallTranscriptBuilderTests
             new(2, 0, "Алло", 0.0m, 0.5m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 0.5);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 0.5);
 
         Assert.That(result.Utterances[0].Role, Is.EqualTo(CallRole.Unknown));
     }
@@ -183,7 +176,7 @@ public class CallTranscriptBuilderTests
             new(0, 0, "первый", 0.0m, 0.5m),
         };
 
-        var result = _builder.Build(words, callDurationSec: 2.5);
+        var result = CallTranscriptBuilder.Build(words, callDurationSec: 2.5);
 
         Assert.That(result.Utterances[0].Text, Is.EqualTo("первый"));
         Assert.That(result.Utterances[1].Text, Is.EqualTo("второй"));

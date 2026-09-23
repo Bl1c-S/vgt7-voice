@@ -10,4 +10,7 @@ public class AiOptions
     public string OpenaiApiKey { get; set; } = string.Empty;
     public readonly AiModelTypes DefaultOpenAiModel = AiModelTypes.Gpt4O;
     
+    
+    public string DeepgramApiKey { get; set; } = string.Empty;
+    public readonly AiModelTypes DefaultDeepgramModel = AiModelTypes.DeepgramNova3;
 }

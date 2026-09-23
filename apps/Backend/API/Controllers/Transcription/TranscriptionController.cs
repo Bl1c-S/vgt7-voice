@@ -1,15 +1,15 @@
 ﻿using API.Models.DTOs;
 using API.Models.Requests;
 using Application.Models.Transcription;
-using Application.Services.Transcription;
+using Application.Services.AI;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers.Transcription;
 
 //[Authorize]?
 [ApiController]
-[Route("api/calls")]
-public class TranscriptionController(TranscriptionManagerFactory factory) : ControllerBase
+[Route("transcribe")]
+public class TranscriptionController(DeepGramAiManager manager) : ControllerBase
 {
     [HttpPost("transcribe")]
     public async Task<ActionResult<CallTranscriptResponse>> Transcribe(
@@ -28,26 +28,23 @@ public class TranscriptionController(TranscriptionManagerFactory factory) : Cont
         await stream.CopyToAsync(memoryStream);
         var audioBytes = memoryStream.ToArray();
 
-        //TODO modelType validation
-        var manager = factory.Create(request.Model);
-
-        CallTranscript transcript;
+        ConversationTranscript transcript;
         try
         {
-            transcript = await manager.TranscribeAsync(audioBytes, request.ManagerChannel);
+            transcript = await manager.SendRequestAsync(audioBytes, request.ManagerChannel);
         }
         catch (HttpRequestException ex)
         {
-            return StatusCode(502, new { message = "Transcription service error", detail = ex.Message });
+            return Problem(statusCode: 502, title: "Transcription service error", detail: ex.Message);
         }
         //todo badFormat handling (catch deepgram Ex)
 
         return Ok(MapToResponse(transcript));
     }
 
-    private static CallTranscriptResponse MapToResponse(CallTranscript transcript) =>
+    private static CallTranscriptResponse MapToResponse(ConversationTranscript transcript) =>
         new(
-            transcript.Utterances.Select(u => new UtteranceDto(u.Start, u.End, u.Role.ToString(), u.Text)).ToList(),
+            transcript.Conversation.Select(u => new UtteranceDto(u.Start, u.End, u.Role.ToString(), u.Text)).ToList(),
             transcript.DurationSec,
             transcript.FullText,
             transcript.Summary);

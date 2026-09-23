@@ -1,5 +1,5 @@
-﻿using Application.Models.TranscriptionModel;
-using Application.Services.Transcription.Deepgram;
+﻿using Application.Models.AiModel;
+using Application.Services.AI;
 
 namespace NUnit.TranscriptionTests;
 
@@ -19,26 +19,26 @@ public class DeepgramTranscriptionManagerIntegrationTest
         Assert.That(File.Exists(TestAudioFilePath), Is.True,
             $"Test audio not found: {Path.GetFullPath(TestAudioFilePath)}");
 
-        var model = new TranscriptionModelDescriptor(TranscriptionModelTypes.DeepgramNova3);
-        var manager = new DeepgramManager(model, apiKey!);
+        var model = new AiModelDescriptor(AiModelTypes.DeepgramNova3);
+        var manager = new DeepGramAiManager(model, apiKey!);
 
         var audioBytes = await File.ReadAllBytesAsync(TestAudioFilePath);
 
-        var result = await manager.TranscribeAsync(audioBytes, 0);
+        var result = await manager.SendRequestAsync(audioBytes, 0);
 
-        Assert.That(result.Utterances, Is.Not.Empty);
+        Assert.That(result.Conversation, Is.Not.Empty);
         Assert.That(result.DurationSec, Is.GreaterThan(0));
         
-        for (var i = 1; i < result.Utterances.Count; i++)
+        for (var i = 1; i < result.Conversation.Count; i++)
         {
-            Assert.That(result.Utterances[i].Start, Is.GreaterThanOrEqualTo(result.Utterances[i - 1].Start));
+            Assert.That(result.Conversation[i].Start, Is.GreaterThanOrEqualTo(result.Conversation[i - 1].Start));
 
         }
         
-        Console.WriteLine($"Utterances count: {result.Utterances.Count}");
+        Console.WriteLine($"Utterances count: {result.Conversation.Count}");
 
         Console.WriteLine("\n--- Utterances with Timestamps ---");
-        foreach (var utt in result.Utterances)
+        foreach (var utt in result.Conversation)
         {
             Console.WriteLine($"[{utt.Start:F2}s - {utt.End:F2}s] (Speaker {utt.Role}): {utt.Text}");
         }
@@ -47,6 +47,6 @@ public class DeepgramTranscriptionManagerIntegrationTest
         Console.WriteLine(result.FullText);
         
         Console.WriteLine($"Duration: {result.DurationSec} sec");
-        Console.WriteLine($"Utterances count: {result.Utterances.Count}");
+        Console.WriteLine($"Utterances count: {result.Conversation.Count}");
     }
 }

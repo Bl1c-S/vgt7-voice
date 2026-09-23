@@ -1,10 +1,7 @@
 ﻿using API.Conventions;
 using API.Options;
 using API.Services.Auth;
-using Application.Options;
 using Application.Services.AI;
-using Application.Services.Transcription;
-using Application.Services.Transcription.Deepgram;
 using Infrastructure.Data;
 using Infrastructure.Logger;
 using Infrastructure.Model;
@@ -31,14 +28,12 @@ public static class ConfigureWebApplicationBuilderExtensions
             var connectionOptions = GetOptions<ConnectionOptions>("Connection", cfg);
             var aiOptions = GetOptions<AiOptions>("AI", cfg);
             var authOptions = GetOptions<AuthOptions>("Auth", cfg);
-            var transcriptOptions = GetOptions<TranscriptionOptions>("Transcription", cfg);
 
             builder.ConfigureLogger(connectionOptions);
 
-            services.ConfigureEntityFramework(cfg, connectionOptions, builder);
+            services.ConfigureEntityFramework(connectionOptions, builder);
             services.ConfigureAuthentication(cfg, authOptions);
             services.ConfigureAiServices(cfg, aiOptions);
-            services.ConfigureTranscriptServices(cfg, transcriptOptions);
 
             services.AddControllers(options => { options.Conventions.Add(new ApiPrefixConvention("api")); });
             services.AddOpenApi();
@@ -54,7 +49,7 @@ public static class ConfigureWebApplicationBuilderExtensions
 
         private void ConfigureLogger(ConnectionOptions options)
         {
-            builder.Host.UseSerilog((context, services, configuration) =>
+            builder.Host.UseSerilog((_, services, configuration) =>
             {
                 var loggerBuilder = new Vgt7LoggerBuilder(options.Psql);
                 var logger = loggerBuilder.Build();
@@ -68,7 +63,7 @@ public static class ConfigureWebApplicationBuilderExtensions
 
     extension(IServiceCollection services)
     {
-        private void ConfigureEntityFramework(ConfigurationManager cfg, ConnectionOptions options,
+        private void ConfigureEntityFramework(ConnectionOptions options,
             WebApplicationBuilder builder)
         {
             services.AddDbContext<ApplicationDbContext>(op =>
@@ -119,25 +114,17 @@ public static class ConfigureWebApplicationBuilderExtensions
                 var factory = provider.GetRequiredService<AiManagerFactory>();
                 return (OpenAiManager)factory.Create(options.DefaultOpenAiModel);
             });
-        }
-
-        private void ConfigureTranscriptServices(ConfigurationManager cfg, TranscriptionOptions options)
-        {
-            services.AddSingleton<TranscriptionManagerFactory>();
-            services.AddSingleton<DeepgramManager>(provider =>
+            services.AddSingleton<DeepGramAiManager>(provider =>
             {
-                var factory = provider.GetRequiredService<TranscriptionManagerFactory>();
-                return (DeepgramManager)factory.Create(options.DefaultDeepgramModel);
+                var factory = provider.GetRequiredService<AiManagerFactory>();
+                return (DeepGramAiManager)factory.Create(options.DefaultDeepgramModel);
             });
         }
-
 
         private void ConfigureOptions(ConfigurationManager cfg)
         {
             services.AddOptions<AiOptions>()
                 .Bind(cfg.GetSection("AI")).ValidateOnStart();
-            services.AddOptions<TranscriptionOptions>()
-                .Bind(cfg.GetSection("Transcription")).ValidateOnStart();
             services.AddOptions<AuthOptions>()
                 .Bind(cfg.GetSection("Auth")).ValidateOnStart();
             services.AddOptions<ConnectionOptions>()

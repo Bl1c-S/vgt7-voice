@@ -3,7 +3,7 @@ using Deepgram.Models.Listen.v1.REST;
 
 namespace Application.Services.Transcription.Deepgram;
 
-public static class DeepgramResponseMapper
+public static class DeepGramResponseMapper
 {
     public static List<TranscribedWord> MapToWords(IReadOnlyList<Channel> channels)
     {

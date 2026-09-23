@@ -7,5 +7,7 @@ public enum AiProviderTypes
     [Description("GEMINI_API_KEY")]
     Gemini,
     [Description("empty")] //TODO
-    OpenAi
+    OpenAi,
+    [Description("DEEPGRAM_API_KEY")]
+    DeepGram
 }

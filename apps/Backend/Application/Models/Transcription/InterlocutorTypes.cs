@@ -1,6 +1,6 @@
 ﻿namespace Application.Models.Transcription;
 
-public enum CallRole
+public enum InterlocutorTypes
 {
     Manager,
     Client,

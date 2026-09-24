@@ -1,6 +1,5 @@
 ﻿using Application.Models.AiModel;
 using Application.Services.AI;
-using Infrastructure.AI;
 using Infrastructure.Options;
 using Microsoft.Extensions.Options;
 
@@ -11,12 +10,13 @@ public class AiManagerFactoryTests
 {
     private readonly AiManagerFactory _factory;
 
-    private AiManagerFactoryTests()
+    public AiManagerFactoryTests()
     {
         var aiOptions = new AiOptions
         {
             GeminiApiKey = "fake-gemini-api-key",
-            OpenaiApiKey = "fake-openapi-api-key"
+            OpenaiApiKey = "fake-openapi-api-key",
+            DeepgramApiKey = "fake-deepgram-api-key"
         };
         var optionsWrapper = Options.Create(aiOptions);
         
@@ -38,5 +38,13 @@ public class AiManagerFactoryTests
 
         Assert.That(manager, Is.TypeOf<OpenAiManager>());
         Assert.That(manager.Model.Type, Is.EqualTo(AiModelTypes.Gpt4O));
+    }
+    [Test]
+    public void Create_WithDeepgramNova3_ReturnsDeepGramAiManager()
+    {
+        var manager = _factory.Create(AiModelTypes.DeepgramNova3);
+
+        Assert.That(manager, Is.TypeOf<DeepGramAiManager>());
+        Assert.That(manager.Model.Type, Is.EqualTo(AiModelTypes.DeepgramNova3));
     }
 }

@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.Interfaces;
 using Application.Models.AiModel;
 
 namespace Infrastructure.AI;

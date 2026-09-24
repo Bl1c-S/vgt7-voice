@@ -23,14 +23,15 @@ public static class ConfigureWebApplicationBuilderExtensions
             var services = builder.Services;
             var cfg = builder.Configuration;
             
+            services.ConfigureOptions(cfg);
+
             var connectionOptions = GetOptions<ConnectionOptions>("Connection", cfg);
             var aiOptions = GetOptions<AiOptions>("AI", cfg);
             var authOptions = GetOptions<AuthOptions>("Auth", cfg);
 
             builder.ConfigureLogger(connectionOptions);
-            services.ConfigureOptions(cfg);
-            
-            services.ConfigureEntityFramework(cfg, connectionOptions, builder);
+
+            services.ConfigureEntityFramework(connectionOptions, builder);
             services.ConfigureAuthentication(cfg, authOptions);
             services.ConfigureAiServices(cfg, aiOptions);
 
@@ -48,7 +49,7 @@ public static class ConfigureWebApplicationBuilderExtensions
 
         private void ConfigureLogger(ConnectionOptions options)
         {
-            builder.Host.UseSerilog((context, services, configuration) =>
+            builder.Host.UseSerilog((_, services, configuration) =>
             {
                 var loggerBuilder = new Vgt7LoggerBuilder(options.Psql);
                 var logger = loggerBuilder.Build();
@@ -62,7 +63,8 @@ public static class ConfigureWebApplicationBuilderExtensions
 
     extension(IServiceCollection services)
     {
-        private void ConfigureEntityFramework(ConfigurationManager cfg, ConnectionOptions options, WebApplicationBuilder builder)
+        private void ConfigureEntityFramework(ConnectionOptions options,
+            WebApplicationBuilder builder)
         {
             services.AddDbContext<ApplicationDbContext>(op =>
                 op.UseNpgsql(options.Psql));
@@ -111,6 +113,11 @@ public static class ConfigureWebApplicationBuilderExtensions
             {
                 var factory = provider.GetRequiredService<AiManagerFactory>();
                 return (OpenAiManager)factory.Create(options.DefaultOpenAiModel);
+            });
+            services.AddSingleton<DeepGramAiManager>(provider =>
+            {
+                var factory = provider.GetRequiredService<AiManagerFactory>();
+                return (DeepGramAiManager)factory.Create(options.DefaultDeepgramModel);
             });
         }
 

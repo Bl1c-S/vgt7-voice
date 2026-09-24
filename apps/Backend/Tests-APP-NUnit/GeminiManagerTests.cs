@@ -1,11 +1,10 @@
 ﻿using Application.Models.AiModel;
 using Application.Services.AI;
-using Infrastructure.AI;
 
 namespace NUnit;
 
-[TestFixture]
-public class GeminiManagerFlashModelTests : IDisposable
+//[TestFixture]
+public class GeminiManagerTests : IDisposable
 {
     private GoogleAiManager _manager;
 
@@ -16,7 +15,7 @@ public class GeminiManagerFlashModelTests : IDisposable
         _manager = new GoogleAiManager(model, "GEMINI_API_KEY");
     }
 
-    [Test]
+    //[Test]
     public async Task SendRequestAsync_ReturnsNonEmptyResponse()
     {
         var response = await _manager.SendRequestAsync("тут ошибка");

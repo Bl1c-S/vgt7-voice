@@ -14,5 +14,9 @@ public enum AiModelTypes
 
     [AiModel(AiProvider.AiProviderTypes.OpenAi)]
     [Description("gpt-4o")]
-    Gpt4O
+    Gpt4O,
+    
+    [AiModel(AiProvider.AiProviderTypes.DeepGram)]
+    [Description("nova-3")]
+    DeepgramNova3
 }
